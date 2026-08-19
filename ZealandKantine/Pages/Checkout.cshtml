@@ -1,0 +1,59 @@
+@page
+@model ZealandKantine.Pages.CheckoutModel
+@{
+    ViewData["Title"] = "Kassen";
+}
+
+<h2>💳 Gennemfør bestilling</h2>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div style="color: #b00020; background: #ffeeee; padding: 12px; border-radius: 5px; margin-bottom: 15px;">
+        @Model.ErrorMessage
+    </div>
+}
+
+<p>
+    Bestillingen er bindende og registreres som et gennemført køb.
+    Maden kan afhentes én time efter bestilling.
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Vare</th>
+            <th>Antal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CartItems)
+        {
+            <tr>
+                <td>@item.Name @(item.IsDrink ? "🥤" : "🍕")</td>
+                <td>@item.Quantity</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td><strong>Total inkl. medarbejderrabat</strong></td>
+            <td><strong>@Model.Total.ToString("0.00") kr</strong></td>
+        </tr>
+    </tfoot>
+</table>
+
+<form method="post" style="margin-top: 20px;">
+    <label style="font-weight: bold;">Medarbejdernummer:</label><br />
+    <input type="text" asp-for="EmployeeNumber" required
+           style="padding: 8px; width: 200px; border: 1px solid #ddd; border-radius: 5px;" /><br /><br />
+    <button type="submit" class="btn btn-success">✅ Bekræft bestilling</button>
+    <a href="/Cart" class="btn btn-primary">⬅️ Tilbage til kurven</a>
+</form>
+
+<style>
+    .btn { padding: 8px 15px; text-decoration: none; color: white; border-radius: 5px; margin: 5px; border: none; cursor: pointer; }
+    .btn-primary { background: blue; }
+    .btn-success { background: green; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; text-align: left; border: 1px solid #ddd; }
+</style>

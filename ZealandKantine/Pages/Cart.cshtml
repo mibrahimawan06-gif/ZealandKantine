@@ -1,0 +1,74 @@
+@page
+@model ZealandKantine.Pages.CartModel
+@{
+    ViewData["Title"] = "Kurv";
+}
+
+<h2>🛒 Din indkøbskurv</h2>
+
+@if (Model.Lines.Count == 0)
+{
+    <p>Din kurv er tom. <a href="/">Gå tilbage til menuen</a></p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Vare</th>
+                <th>Stykpris</th>
+                <th>Antal</th>
+                <th>Total</th>
+                <th>Handling</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var line in Model.Lines)
+            {
+                <tr>
+                    <td>@line.Item.Name @(line.Item.IsDrink ? "🥤" : "🍕 (10% rabat)")</td>
+                    <td>@line.UnitPrice.ToString("0.00") kr</td>
+                    <td>
+                        <form method="post" asp-page-handler="UpdateQuantity" style="display: inline;">
+                            <input type="hidden" name="productId" value="@line.Item.ProductId" />
+                            <input type="number" name="quantity" value="@line.Item.Quantity" min="1" style="width: 60px;" />
+                            <button type="submit" class="btn btn-primary">Opdater</button>
+                        </form>
+                    </td>
+                    <td>@line.LineTotal.ToString("0.00") kr</td>
+                    <td>
+                        <form method="post" asp-page-handler="RemoveFromCart" style="display: inline;">
+                            <input type="hidden" name="productId" value="@line.Item.ProductId" />
+                            <button type="submit" class="btn btn-danger">Fjern</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3"><strong>Total inkl. rabat:</strong></td>
+                <td><strong>@Model.Total.ToString("0.00") kr</strong></td>
+                <td>
+                    <form method="post" asp-page-handler="ClearCart">
+                        <button type="submit" class="btn btn-danger">Tøm kurv</button>
+                    </form>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div>
+        <a href="/" class="btn btn-primary">⬅️ Fortsæt med at handle</a>
+        <a href="/Checkout" class="btn btn-success">💳 Gå til kassen</a>
+    </div>
+}
+
+<style>
+    .btn { padding: 8px 15px; text-decoration: none; color: white; border-radius: 5px; margin: 5px; border: none; cursor: pointer; display: inline-block; }
+    .btn-primary { background: blue; }
+    .btn-success { background: green; }
+    .btn-danger { background: red; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; text-align: left; border: 1px solid #ddd; }
+</style>

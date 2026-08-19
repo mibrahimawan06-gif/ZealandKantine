@@ -1,0 +1,47 @@
+@page
+@model ZealandKantine.Pages.AddProductModel
+@{
+    ViewData["Title"] = "Tilføj vare";
+}
+
+<h2>➕ Tilføj vare til sortimentet</h2>
+
+<form method="post">
+    <div style="margin-bottom: 10px;">
+        <label>Navn:</label><br />
+        <input type="text" asp-for="Product.Name" required />
+        <span asp-validation-for="Product.Name" style="color: red;"></span>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label>Beskrivelse:</label><br />
+        <input type="text" asp-for="Product.Description" />
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label>Pris (kr):</label><br />
+        <input type="number" step="0.01" asp-for="Product.Price" required />
+        <span asp-validation-for="Product.Price" style="color: red;"></span>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label>
+            <input type="checkbox" asp-for="Product.IsDrink" />
+            Drikkevare (ingen medarbejderrabat)
+        </label>
+    </div>
+
+    <button type="submit" class="btn btn-success">💾 Gem</button>
+    <a href="/" class="btn btn-secondary">⬅️ Tilbage</a>
+</form>
+
+<style>
+    .btn { padding: 8px 15px; text-decoration: none; color: white; border-radius: 5px; margin: 5px; border: none; cursor: pointer; }
+    .btn-success { background: green; }
+    .btn-secondary { background: gray; }
+    input[type="text"], input[type="number"] { padding: 8px; width: 260px; border: 1px solid #ddd; border-radius: 5px; }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

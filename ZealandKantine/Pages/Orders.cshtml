@@ -1,0 +1,54 @@
+@page
+@model ZealandKantine.Pages.OrdersModel
+@{
+    ViewData["Title"] = "Bestillinger";
+}
+
+<h2>📋 Alle bestillinger</h2>
+
+@if (Model.Orders.Count == 0)
+{
+    <p>Der er endnu ingen bestillinger.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Ordre</th>
+                <th>Medarbejder</th>
+                <th>Bestilt</th>
+                <th>Afhentning</th>
+                <th>Varer</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.Employee?.Name (@order.Employee?.EmployeeNumber)</td>
+                    <td>@order.OrderTime.ToString("dd-MM HH:mm")</td>
+                    <td>@order.PickupTime.ToString("dd-MM HH:mm")</td>
+                    <td>
+                        @foreach (var line in order.OrderLines)
+                        {
+                            <div>@line.Quantity × @line.Product?.Name (@line.UnitPrice.ToString("0.00") kr)</div>
+                        }
+                    </td>
+                    <td>@order.TotalAmount.ToString("0.00") kr</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a href="/" class="btn btn-primary">⬅️ Tilbage til menuen</a>
+
+<style>
+    .btn { padding: 8px 15px; text-decoration: none; color: white; border-radius: 5px; margin: 5px; border: none; cursor: pointer; }
+    .btn-primary { background: blue; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; text-align: left; border: 1px solid #ddd; vertical-align: top; }
+</style>

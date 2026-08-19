@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ZealandKantine</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ZealandKantine.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <!-- Gul navbar med madlogo -->
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" style="background-color: #F5E6A3; border-bottom: 2px solid #d4c58a !important; padding: 16px 0; width: 100%;">
+            <div class="container-fluid" style="max-width: 1400px; padding: 0 30px;">
+                <!-- 🍽️ Tallerken med bestik -->
+                <a class="navbar-brand" asp-area="" asp-page="/Index" style="display: flex; align-items: center; gap: 12px; color: #000000; font-weight: 800; font-size: 28px; letter-spacing: -0.5px; text-decoration: none;">
+                    <span style="font-size: 36px;">🍽️</span>
+                    ZealandKantine
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Index" style="color: #000000; font-weight: 700; font-size: 18px; padding: 8px 16px;">
+                                Dagens Menu
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- Grå footer -->
+    <footer class="border-top footer text-muted" style="background-color: #f5f5f5; border-top: 1px solid #e0e0e0 !important;">
+        <div class="container">
+            &copy; 2026 - ZealandKantine</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

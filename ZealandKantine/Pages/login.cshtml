@@ -1,0 +1,44 @@
+﻿@page
+@model ZealandKantine.Pages.loginModel
+@{
+}
+
+
+<div style="max-width: 400px; margin: 0 auto; padding: 20px;">
+    <!-- Pizza med nøglehul i stedet for lås -->
+    <h2 style="text-align: center; font-size: 28px;">
+        <span style="font-size: 40px; display: block; margin-bottom: 10px;">🍕🔑</span>
+        Login
+    </h2>
+
+
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div style="color: red; background: #ffeeee; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+            @Model.ErrorMessage
+        </div>
+    }
+
+    <form method="post">
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Brugernavn:</label>
+            <input type="text" asp-for="Username" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;" />
+        </div>
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Adgangskode:</label>
+            <input type="password" asp-for="Password" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;" />
+        </div>
+        <button type="submit" style="width: 100%; padding: 12px; background: #28a745; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
+            Log ind
+        </button>
+    </form>
+
+
+</div>
+
+<style>
+    /* Hover effekt på knap */
+    button[type="submit"]:hover {
+        background: #218838 !important;
+    }
+</style>

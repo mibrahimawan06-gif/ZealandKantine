@@ -1,0 +1,120 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Menu";
+    var isAdmin = Model.IsAdmin;
+}
+
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>🍔 Kantinens menu</h2>
+    <div>
+        <a href="/Cart" class="btn btn-info">🛒 Kurv (@Model.GetCartItemCount())</a>
+        <span style="margin: 0 10px; color: #333;">
+            👤 @Model.Username (@Model.UserRole)
+        </span>
+        <form method="post" asp-page-handler="Logout" style="display: inline;">
+            <button type="submit" class="btn btn-danger">🚪 Log ud</button>
+        </form>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <div style="color: #b00020; background: #ffeeee; padding: 12px; border-radius: 5px; margin-bottom: 15px;">
+        @Model.Message
+    </div>
+}
+
+@if (isAdmin)
+{
+    <div style="margin-bottom: 20px;">
+        <a href="/AddProduct" class="btn" style="background: #FF6B35;">➕ Tilføj vare</a>
+        <a href="/Orders" class="btn" style="background: #6c757d;">📋 Se bestillinger</a>
+    </div>
+}
+
+<h3>🍕 Madretter <small style="font-weight: normal; color: #666;">— 10% medarbejderrabat</small></h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Navn</th>
+            <th>Beskrivelse</th>
+            <th>Pris</th>
+            <th>Din pris</th>
+            <th>Handling</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.FoodItems)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.Price.ToString("0.00") kr</td>
+                <td><strong>@Model.GetDiscountedPrice(item).ToString("0.00") kr</strong></td>
+                <td>
+                    <form method="post" asp-page-handler="AddToCart" style="display: inline;">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-success">🛒 Vælg</button>
+                    </form>
+                    @if (isAdmin)
+                    {
+                        <a href="/EditProduct?id=@item.Id" class="btn btn-warning">✏️</a>
+                        <form method="post" asp-page-handler="DeleteProduct" style="display: inline;"
+                              onsubmit="return confirm('Slet varen?');">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-danger">🗑️</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>🥤 Drikkevarer <small style="font-weight: normal; color: #666;">— ingen rabat</small></h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Navn</th>
+            <th>Beskrivelse</th>
+            <th>Pris</th>
+            <th>Handling</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DrinkItems)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.Price.ToString("0.00") kr</td>
+                <td>
+                    <form method="post" asp-page-handler="AddToCart" style="display: inline;">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-success">🛒 Vælg</button>
+                    </form>
+                    @if (isAdmin)
+                    {
+                        <a href="/EditProduct?id=@item.Id" class="btn btn-warning">✏️</a>
+                        <form method="post" asp-page-handler="DeleteProduct" style="display: inline;"
+                              onsubmit="return confirm('Slet varen?');">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-danger">🗑️</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    .btn { padding: 8px 15px; text-decoration: none; color: white; border-radius: 5px; margin: 5px; border: none; cursor: pointer; display: inline-block; }
+    .btn-success { background: green; }
+    .btn-warning { background: orange; }
+    .btn-danger { background: red; }
+    .btn-info { background: purple; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; text-align: left; border: 1px solid #ddd; }
+</style>

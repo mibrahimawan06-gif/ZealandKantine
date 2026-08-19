@@ -1,0 +1,59 @@
+@page
+@model ZealandKantine.Pages.ConfirmationModel
+@{
+    ViewData["Title"] = "Kvittering";
+}
+
+<h2>✅ Tak for din bestilling</h2>
+
+@if (Model.Order != null)
+{
+    <div style="background: #e8f5e9; padding: 20px; border-radius: 8px; border-left: 4px solid #4caf50; margin-bottom: 20px;">
+        <p style="margin: 0;"><strong>Ordrenummer:</strong> @Model.Order.Id</p>
+        <p style="margin: 0;"><strong>Bestilt af:</strong> @Model.Order.Employee?.Name (@Model.Order.Employee?.EmployeeNumber)</p>
+        <p style="margin: 0;"><strong>Bestilt:</strong> @Model.Order.OrderTime.ToString("dd-MM-yyyy HH:mm")</p>
+        <p style="margin: 0;"><strong>Kan afhentes:</strong> @Model.Order.PickupTime.ToString("dd-MM-yyyy HH:mm")</p>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Vare</th>
+                <th>Antal</th>
+                <th>Stykpris</th>
+                <th>Linjetotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var line in Model.Order.OrderLines)
+            {
+                <tr>
+                    <td>@line.Product?.Name</td>
+                    <td>@line.Quantity</td>
+                    <td>@line.UnitPrice.ToString("0.00") kr</td>
+                    <td>@line.LineTotal.ToString("0.00") kr</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3"><strong>Total</strong></td>
+                <td><strong>@Model.Order.TotalAmount.ToString("0.00") kr</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <p style="color: #666; font-size: 14px;">
+        Beløbet er registreret på medarbejdernummeret og afregnes efterfølgende.
+        Systemet håndterer ikke betaling.
+    </p>
+
+    <a href="/" class="btn btn-primary">⬅️ Tilbage til menuen</a>
+}
+
+<style>
+    .btn { padding: 8px 15px; text-decoration: none; color: white; border-radius: 5px; margin: 5px; border: none; cursor: pointer; }
+    .btn-primary { background: blue; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; text-align: left; border: 1px solid #ddd; }
+</style>
